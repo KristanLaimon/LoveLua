@@ -1,24 +1,14 @@
-local Control = require "KrsLibs.GUI.Control";
-local Color = require "KrsLibs.Structs.Color";
+local Label= require "KrsLibs.GUI.Label"
 local love = require "love";
+local DebugUtils = require "KrsLibs.Debug.DebugUtils";
 
-local b = Control(10, 10, "Hola Mundoooo");
-b.BackGroundColor = Color.White;
-b.ForeGroundColor = Color.Black;
-
-local x = Control(100, 100, "Some text");
-x.BackGroundColor = Color.White;
-x.ForeGroundColor = Color.Black;
-
-local help = Control(123,150, "Dios, ayuda");
-
+local PositionLabel = Label(10,10, "No Position");
 ---@param dt number
 function love.update(dt)
-  b.Text = tostring(dt);
+  PositionLabel.Text = DebugUtils.GetMousePosString();
+  collectgarbage();
 end
 
 function love.draw()
-    b:DrawUpdate();
-    x:DrawUpdate();
-    help:DrawUpdate();
+  PositionLabel:DrawUpdate();
 end
