@@ -1,16 +1,15 @@
 
----@alias DelegateType function
-
----@class Delegate<DelegateType>
----@field Functs DelegateType[]
----@field CallAll fun(self:Delegate, params:any|nil):nil;
+---@generic T asdf
+---@class Delegate<T>
+---@field Functs []:T
+---@field CallAll fun(self:Delegate, ...):nil;
 ---@field Add fun(self:Delegate, funct:function):nil
 local _Delegate = {
   Functs = {}
 };
 
 ---Add a new funct subscriber to this function
----@param newFunct DelegateType
+---@param newFunct function
 function _Delegate:Add(newFunct)
     table.insert(self.Functs, newFunct);
 end
@@ -29,6 +28,7 @@ function _Delegate:CallAll(...)
   end
 end
 
+---@return Delegate
 return function()
   local _ = setmetatable({}, {__index = _Delegate});
   return _;
