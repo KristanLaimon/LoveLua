@@ -4,6 +4,7 @@ local Size = require "KrsLibs.Structs.Size";
 local Point = require "KrsLibs.Structs.Point";
 local delegate = require "KrsLibs.Utils.Delegate";
 local MouseUtils = require "KrsLibs.Utils.MouseUtils";
+local GUIUtils = require "KrsLibs.GUI.GUIUtils"
 
 ---@alias Font any
 
@@ -17,14 +18,16 @@ local MouseUtils = require "KrsLibs.Utils.MouseUtils";
 ---@field Position Point
 ---@field Size Size
 ---@field BackGroundColor RGB
----@field Text string
+---@field protected Text string
 ---@field FontText Font
 ---@field ForeGroundColor RGB
 ---@field IsFocused boolean
----@field Padding {leftright:number, topbottom:number}
+---@field Padding {leftright:number, topbottom:number} --- In pixels
 ---@field DrawUpdate fun(self:Control):nil
 ---@field LogicUpdate fun(self:Control, clickX: integer, clickY:integer, buttonClickNum:integer):nil
----@field onClick Delegate<fun(event:EVENT_Click)>
+---@field onClick DelegateType<fun(clickEvent: EVENT_Click), EVENT_Click>
+---@field setText fun(self:Control, newText:string)
+---@field getText fun(self:Control):string
 local Button = {
   Position = Point(0,0),
   Size = Size(100,100), -- Width, Height, Position, Offset
@@ -34,9 +37,15 @@ local Button = {
   ForeGroundColor = Color.White,
   IsFocused = false,
   --- In pixels
-    Padding = { leftright = 5, topbottom = 5 },
+  Padding = { leftright = 20, topbottom = 5 },
   onClick = delegate()
 }
+---                         GETTERS / SETTERS SECTION
+
+function Button:setText(newText) self.Text = newText end
+function Button:getText() return self.Text end
+
+--                           RENDER SECTION
 
 ---@private
 ---@param self Control
@@ -46,7 +55,7 @@ local function __RenderUpdate(self)
 
     Color.SetThisColor(self.ForeGroundColor);
     love.graphics.print(
-        self.Text,
+        self:getText(),
         self.FontText,
         self.Position.x + self.Padding.leftright, --Should consider padding
         self.Position.y + self.Padding.topbottom, --Same as above
@@ -106,11 +115,10 @@ end
 return function(x, y, text, width, height)
     local _ = setmetatable({}, { __index = Button })
 
-    _.Text = text or "Button Default"
-    local newWidth = width or _.FontText:getWidth(_.Text) + _.Padding.leftright * 2;
-    local newHeight = height or _.FontText:getHeight(_.Text) + _.Padding.topbottom * 2;
-    _.Size = Size(newWidth, newHeight)
+    _:setText(text or "Button Default");
+    _.Size = GUIUtils.CalculateSizeBasedOnText(_, text)
     _.Position = Point(x,y);
 
     return _;
 end
+
