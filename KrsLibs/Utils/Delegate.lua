@@ -11,13 +11,13 @@
 ---
 --- #### Generics
 --- ---------
---- #### Function Type : T
+--- #### Function Type : T (Mandatory!)
 ---   It is the unique type of function this delegate will accept
 ---
 --- e.g:
 --- ```lua
 ---   DelegateType<fun():nil>
----   DelegateType<fun(name:string):nil, string>
+---   DelegateType<fun(name:string), string>
 --- ```
 --- #### Function Parameter 1 Type : V (Optional)
 --- The type of the first param of the function

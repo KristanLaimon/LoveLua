@@ -37,7 +37,7 @@ local Button = {
   ForeGroundColor = Color.White,
   IsFocused = false,
   --- In pixels
-  Padding = { leftright = 20, topbottom = 5 },
+  Padding = { leftright = 5, topbottom = 5 },
   onClick = delegate()
 }
 ---                         GETTERS / SETTERS SECTION
@@ -84,7 +84,7 @@ local function __EventsUpdate(self, clickedX, clickedY, buttonClickNum)
         clickedX,
         clickedY
     );
-    
+
     ---@type EVENT_Click
     local EVENT_Click_Obj = {
         buttonClicked = MouseUtils.GetClickButtonFromNumber(buttonClickNum),
