@@ -32,7 +32,7 @@ end
 ---@param minRange integer
 ---@param maxRange integer
 ---@overload fun(maxRange:integer) Range starting from 1 to maxRange parameter
-Range = function(minRange, maxRange)
+local Range = function(minRange, maxRange)
     i = 0
     MaxRange = maxRange;
     MinRange = minRange;
@@ -43,3 +43,4 @@ Range = function(minRange, maxRange)
     end
 end
 
+return Range
