@@ -1,9 +1,10 @@
 local Love_Events = require "love_cycle"
+local MouseUtils  = require "KrsLibs.Utils.MouseUtils"
 
 --@field Update_Logic fun(self:Window, delta:number)
 ---@class Window
----@field MousePressed_Logic fun(self:Window, clickedX: integer, clickedY:integer, clickedButton: integer)
----@field Draw_Logic fun(self:Window)
+---@field private MousePressed_Logic fun(self:Window, clickedX: integer, clickedY:integer, clickedButton: integer)
+---@field private Draw_Logic fun(self:Window)
 ---@field AddControl fun(self:Window, newControl:Control)
 ---@field Controls Control[]
 local Window = {}
@@ -21,8 +22,13 @@ function Window:Draw_Logic()
 end
 
 function Window:MousePressed_Logic(clickedX, clickedY, clickedButton)
-  for _,v in pairs(self.Controls) do
-    v:LogicUpdate(clickedX, clickedY, clickedButton)
+    for _, v in pairs(self.Controls) do
+      if MouseUtils.HasClicked(v.Position.x, v.Position.y, v.Size.Width, v.Size.Height, clickedX, clickedY) then
+        v.IsFocused = true
+      else
+        v.IsFocused = false
+      end
+      v:LogicUpdate(clickedX, clickedY, clickedButton)
   end
 end
 

@@ -4,6 +4,7 @@ local GUIUtils = require "KrsLibs.GUI.GUIUtils"
 local Point    = require "KrsLibs.Structs.Point"
 
 ---@class Label : Control
+---@field type "Label"
 local Label = Control(0,0, "label");
 
 -- Overriding parent method (Override - Abstract)
@@ -24,6 +25,7 @@ return function(x, y, text)
     _.BackGroundColor = Color.Black;
     _.ForeGroundColor = Color.White;
     _.Position = Point(x, y)
+    _.type = "Label"
     _:setText(text)
 
     return _ --[[@as Label]]

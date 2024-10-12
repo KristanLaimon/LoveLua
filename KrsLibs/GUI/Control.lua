@@ -8,6 +8,10 @@ local GUIUtils = require "KrsLibs.GUI.GUIUtils"
 
 ---@alias Font any
 
+---@alias ControlType
+---| "Control"
+---| "Label"
+
 ---@class EVENT_Click
 ---@field clickedX number
 ---@field clickedY number
@@ -25,21 +29,12 @@ local GUIUtils = require "KrsLibs.GUI.GUIUtils"
 ---@field Padding {leftright:number, topbottom:number} --- In pixels
 ---@field DrawUpdate fun(self:Control):nil
 ---@field LogicUpdate fun(self:Control, clickX: integer, clickY:integer, buttonClickNum:integer):nil
----@field onClick DelegateType<fun(clickEvent: EVENT_Click), EVENT_Click>
+---@field onClick DelegateType<fun(clickEvent: EVENT_Click), EVENT_Click> 
 ---@field setText fun(self:Control, newText:string)
 ---@field getText fun(self:Control):string
-local Button = {
-  Position = Point(0,0),
-  Size = Size(100,100), -- Width, Height, Position, Offset
-  BackGroundColor = Color.Black;
-  Text = "Button",
-  FontText = love.graphics.newFont(12, "normal", 12),
-  ForeGroundColor = Color.White,
-  IsFocused = false,
-  --- In pixels
-  Padding = { leftright = 5, topbottom = 5 },
-  onClick = delegate()
-}
+---@field type ControlType
+local Button = {}
+
 ---                         GETTERS / SETTERS SECTION
 
 function Button:setText(newText) self.Text = newText end
@@ -126,10 +121,21 @@ end
 return function(x, y, text, width, height)
     local _ = setmetatable({}, { __index = Button })
 
+    _.Position = Point(x, y);
+    _.BackGroundColor = Color.Black
+    _.FontText = love.graphics.newFont(12, "normal", 12);
+    _.ForeGroundColor = Color.White;
+    _.IsFocused = false;
+    _.Padding = { leftright = 5, topbottom = 5 }
+    _.onClick = delegate()
+    _.type = "Control"
     _:setText(text or "Button Default");
-    _.Size = GUIUtils.CalculateSizeBasedOnText(_, text)
-    _.Position = Point(x,y);
+    
+    if width and height then
+        _.Size = Size(width, height)
+    else
+        _.Size = GUIUtils.CalculateSizeBasedOnText(_, text)
+    end
 
     return _;
 end
-
