@@ -24,15 +24,13 @@
 ---
 --- #### Function Parameter 2 Type : R (Optional)
 --- Tye type of the second param of the function
----@class DelegateType<T,V,R>: {Functs:T[], CallAll: fun(self:DelegateType<T,V,R>, param1:V|nil, param2:R|nil), Add: fun(self:DelegateType<T,V,R>, fun:T)}
+---@class DelegateType<T,V,R,S>: {Functs:T[], CallAll: fun(self:DelegateType<T,V,R,S>, param1:V|nil, param2:R|nil, param3:S|nil), Add: fun(self:DelegateType<T,V,R,S>, fun:T)}
 
 ---@class Delegate
 ---@field Functs function[]
 ---@field CallAll fun(  self:Delegate, ...):nil;
 ---@field Add fun(self:Delegate, funct:function):nil
-local _Delegate = {
-  Functs = {}
-};
+local _Delegate = {};
 
 ---Add a new funct subscriber to this function
 ---@param newFunct function
@@ -56,6 +54,7 @@ end
 
 ---@return Delegate
 return function()
-  local _ = setmetatable({}, {__index = _Delegate});
+  local _ = setmetatable({}, { __index = _Delegate });
+  _.Functs = {}
   return _;
 end

@@ -1,6 +1,7 @@
----@class Matrix<T>: {data: T[][]}
+---@class Matrix: {data: number[][]|integer[][]}
 ---@field rows integer
 ---@field columns integer
+---@operator mul(Matrix):Matrix
 local Matrix = {
   data={},
   rows=0,
@@ -54,17 +55,6 @@ end
 
 ---                               REGION UTILS
 
----Return the length of array
----@param table any[]
----@return integer
-local function len(table)
-    local params_length = 0;
-    for _, _ in pairs(table) do
-        params_length = params_length + 1
-    end
-    return params_length
-end
-
 ---                              STATIC METHODS
 ---                                Constructor
 
@@ -74,7 +64,7 @@ end
 ---@param values T[]
 ---@return Matrix
 local function Matrix_Constructor(rows, columns, values)
-    if len(values) ~= rows * columns then
+    if #values ~= rows * columns then
       error("Matrix_Constructor: number of  values does't match rows * columns total quantity")
       return {}
     end
@@ -126,10 +116,9 @@ local function Matrix_Identity(squareDimension)
   return Matrix_Constructor(squareDimension, squareDimension, _data_)
 end
 
+--
 local Matrix_Module = {}
-
 Matrix_Module.new = Matrix_Constructor;
 Matrix_Module.new_default = Matrix_Constructor_Default;
 Matrix_Module.new_identity = Matrix_Identity;
-
 return Matrix_Module

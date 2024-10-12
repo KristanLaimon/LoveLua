@@ -85,14 +85,25 @@ local function __EventsUpdate(self, clickedX, clickedY, buttonClickNum)
         clickedY
     );
 
-    ---@type EVENT_Click
-    local EVENT_Click_Obj = {
-        buttonClicked = MouseUtils.GetClickButtonFromNumber(buttonClickNum),
-        clickedX = clickedX,
-        clickedY = clickedY,
-        hasClicked = clicked
-    };
-    self.onClick:CallAll(EVENT_Click_Obj);
+    local hasClicked = MouseUtils.HasClicked(
+        self.Position.x,
+        self.Position.y,
+        self.Size.Width,
+        self.Size.Height,
+        clickedX,
+        clickedY
+    );
+
+    if hasClicked then
+        ---@type EVENT_Click
+        local EVENT_Click_Obj = {
+            buttonClicked = MouseUtils.GetClickButtonFromNumber(buttonClickNum),
+            clickedX = clickedX,
+            clickedY = clickedY,
+            hasClicked = clicked
+        };
+        self.onClick:CallAll(EVENT_Click_Obj);
+    end
 end
 
 function Button:DrawUpdate()
